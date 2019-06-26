@@ -102,8 +102,8 @@ public class HomeScreen extends AppCompatActivity {
     private void dologout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
-        builder.setTitle("ILeadByExample");
-        builder.setMessage("Are you sure wants to Logout ?");
+        builder.setTitle("Logout ?");
+        builder.setMessage("Are you sure you wants to Logout ?");
         builder.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     @Override

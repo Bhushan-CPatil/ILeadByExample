@@ -11,6 +11,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -58,10 +59,10 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private Button registerButton;
-    private FloatingActionButton loginButton;
+    public EditText editTextEmail;
+    public TextInputEditText editTextPassword;
+    public Button registerButton;
+    public FloatingActionButton loginButton;
     RelativeLayout rl;
     String mPhoneNumber;
     Spinner spnArea;
@@ -264,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setTitle("Need Permissions");
+        builder.setTitle("Need Permissions ?");
         builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
         builder.setPositiveButton("GOTO SETTINGS", new DialogInterface.OnClickListener() {
             @Override

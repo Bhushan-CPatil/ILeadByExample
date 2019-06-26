@@ -3,6 +3,8 @@ package com.eis.ileadbyexample;
 import android.app.ProgressDialog;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.eis.ileadbyexample.R;
@@ -49,6 +51,7 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
     TextView fctime,lctime,fcadd,lcad,ttltime,date;
     ProgressDialog progressDialog;
     String fclatlang,lclatlang;
+    ImageButton back;
     List<LatLng> polygon = new ArrayList<>();
 
     @Override
@@ -61,6 +64,7 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
         lcad = findViewById(R.id.lstadd);
         ttltime = findViewById(R.id.ttlwrk);
         date = findViewById(R.id.date);
+        back = findViewById(R.id.back);
 
         fctime.setText(getIntent().getStringExtra("fctime"));
         fcadd.setText(getIntent().getStringExtra("fcadd"));
@@ -68,7 +72,6 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
         lcad.setText(getIntent().getStringExtra("lcadd"));
         ttltime.setText(getIntent().getStringExtra("wrktime"));
         date.setText(getIntent().getStringExtra("date"));
-
         fclatlang = getIntent().getStringExtra("fclatlang");
         lclatlang = getIntent().getStringExtra("lclatlang");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -76,7 +79,12 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
 
         mapFragment.getMapAsync(this);
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         progressDialog = new ProgressDialog(LocationDetails.this);
 

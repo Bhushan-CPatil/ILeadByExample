@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,7 +47,8 @@ import retrofit2.Response;
 
 public class RegisterUser extends AppCompatActivity {
 
-    private EditText id,pass,mobno;
+    private EditText id,mobno;
+    private TextInputEditText pass;
     private FloatingActionButton fabbtn;
     private Button loginpage;
     RelativeLayout rl;

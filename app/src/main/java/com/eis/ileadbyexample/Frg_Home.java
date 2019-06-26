@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eis.ileadbyexample.Activities.LoginActivity;
@@ -85,6 +86,7 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
     ViewDialog progressDialoge;
     boolean allgranted = false;
     View view;
+    TextView reload;
     LocationManager locationManager;
 
 
@@ -97,6 +99,7 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         progressDialoge=new ViewDialog(getActivity());
 
         fcall = view.findViewById(R.id.fcall);
+        reload = view.findViewById(R.id.reload);
         fcall.setEnabled(false);
         fcall.setBackground(getResources().getDrawable(R.drawable.tintbackground));
         lcall = view.findViewById(R.id.lcall);
@@ -120,6 +123,13 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         //latlang = "92.351651321, 67.321685132198";
         //loc = "nerul";
 
+        reload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Refresh map", Toast.LENGTH_LONG).show();
+            }
+        });
+
         locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         getUserStatus();
         requestStoragePermission();
@@ -138,8 +148,8 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
-                builder.setTitle("ILeadByExample");
-                builder.setMessage("Are you sure this is your current location and want's to mark as your first call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
+                builder.setTitle("Alert ?");
+                builder.setMessage("Are you sure this is your current location and you want to mark as your first call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -206,7 +216,7 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
                 builder.setTitle("ILeadByExample");
-                builder.setMessage("Are you sure this is your current location and want's to mark as your last call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
+                builder.setMessage("Are you sure this is your current location and you want to mark as your last call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -338,7 +348,9 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         Dexter.withActivity(getActivity())
                 .withPermissions(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
@@ -378,7 +390,7 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
 
     private void showSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Need Permissions");
+        builder.setTitle("Need Permissions ?");
         builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
         builder.setPositiveButton("GOTO SETTINGS", new DialogInterface.OnClickListener() {
             @Override
