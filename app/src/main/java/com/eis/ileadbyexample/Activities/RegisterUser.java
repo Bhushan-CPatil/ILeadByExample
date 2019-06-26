@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -136,12 +137,14 @@ public class RegisterUser extends AppCompatActivity {
                     if (!dResponse.isError()) {
                         // Log.d("message",loginResponse.getMessage());
                         if (dResponse.getErrormsg().equalsIgnoreCase("SUCCESS")) {
-                            Intent intent = new Intent(RegisterUser.this,OTPVerification.class);
+                            /*Intent intent = new Intent(RegisterUser.this,OTPVerification.class);
                             intent.putExtra("ecode",id.getText().toString().trim());
                             intent.putExtra("mobile",mobno.getText().toString().trim());
                             intent.putExtra("dbprefix",spnArea.getSelectedItem().toString().trim());
                             startActivity(intent);
+                            finish();*/
                             finish();
+                            Toast.makeText(RegisterUser.this, "Successfully Register", Toast.LENGTH_LONG).show();
                         }
                     } else {
                         Snackbar snackbar = Snackbar.make(rl, dResponse.getErrormsg(), Snackbar.LENGTH_LONG);
@@ -173,7 +176,7 @@ public class RegisterUser extends AppCompatActivity {
     private void getArea() {
 
         progress.show();
-        StringRequest stringRequest =new StringRequest(Request.Method.GET, RetrofitClient.BASE_URL+"getdbnames", new com.android.volley.Response.Listener<String>() {
+        StringRequest stringRequest =new StringRequest(Request.Method.GET, RetrofitClient.BASE_URL+"getdbnames.php", new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();

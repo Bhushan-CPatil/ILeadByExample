@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            if (password.length() > 5) {
+            if (password.length() != 5) {
                 editTextPassword.setError("Please enter valid password");
                 editTextPassword.requestFocus();
                 return;
@@ -183,16 +183,16 @@ public class LoginActivity extends AppCompatActivity {
                                     Snackbar snackbar = Snackbar.make(rl, "User is already logged in into other device", Snackbar.LENGTH_INDEFINITE);
                                     snackbar.show();
                                 }
-                            } else if (loginResponse.getUser().getUser_status().equalsIgnoreCase("registered")) {
+                            } else if (loginResponse.getUser().getUser_status().equalsIgnoreCase("deleted")) {
+                                Snackbar snackbar = Snackbar.make(rl, "User is deleted. not allowed to logged in sorry !", Snackbar.LENGTH_INDEFINITE);
+                                snackbar.show();
+                            }/* else if (loginResponse.getUser().getUser_status().equalsIgnoreCase("registered")) {
                                 Intent intent = new Intent(LoginActivity.this, OTPVerification.class);
                                 intent.putExtra("ecode", loginResponse.getUser().getEcode());
                                 intent.putExtra("mobile", mPhoneNumber);
                                 intent.putExtra("dbprefix", spnArea.getSelectedItem().toString().trim());
                                 startActivity(intent);
-                            } else if (loginResponse.getUser().getUser_status().equalsIgnoreCase("deleted")) {
-                                Snackbar snackbar = Snackbar.make(rl, "User is deleted. not allowed to logged in sorry !", Snackbar.LENGTH_INDEFINITE);
-                                snackbar.show();
-                            }
+                            }*/
                         }
                     } else {
                         Snackbar snackbar = Snackbar.make(rl, loginResponse.getMessage(), Snackbar.LENGTH_INDEFINITE);
@@ -293,7 +293,7 @@ public class LoginActivity extends AppCompatActivity {
     private void getArea() {
 
         progress.show();
-        StringRequest stringRequest =new StringRequest(Request.Method.GET, RetrofitClient.BASE_URL+"getdbnames", new com.android.volley.Response.Listener<String>() {
+        StringRequest stringRequest =new StringRequest(Request.Method.GET, RetrofitClient.BASE_URL+"getdbnames.php", new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();

@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 public interface Api {
 
     @FormUrlEncoded
-    @POST("userlogin")
+    @POST("userlogin.php")
     Call<LoginResponse> userLogin(
             @Field("ecode") String email,
             @Field("password") String password,
@@ -22,7 +22,7 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("registerUser")
+    @POST("registerUser.php")
     Call<DefaultResponse> registerUser(
             @Field("id") String lid,
             @Field("password") String password,
@@ -31,14 +31,14 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("verifyuser")
+    @POST("verifyuser.php")
     Call<DefaultResponse> checkOTP(
             @Field("otp") String OTPPASS,
             @Field("DBPrefix") String DBPrefix
     );
 
     @FormUrlEncoded
-    @POST("resendotp")
+    @POST("resendotp.php")
     Call<DefaultResponse> resendOTP(
             @Field("id") String id,
             @Field("contact") String contact,
@@ -46,14 +46,14 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("logout")
+    @POST("logout.php")
     Call<DefaultResponse> Logout(
             @Field("ecode") String ecode,
             @Field("DBPrefix") String DBPrefix
     );
 
     @FormUrlEncoded
-    @POST("fcinsertion")
+    @POST("fcinsertion.php")
     Call<DefaultResponse> FCALL(
             @Field("ecode") String ecode,
             @Field("latlang") String latlang,
@@ -63,7 +63,7 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("lcinsertion")
+    @POST("lcinsertion.php")
     Call<DefaultResponse> LCALL(
             @Field("ecode") String ecode,
             @Field("latlang") String latlang,
@@ -73,21 +73,21 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("checkstatus")
+    @POST("checkstatus.php")
     Call<ErrorBooleanResponce> islogincontinue(
             @Field("ecode") String ecode,
             @Field("DBPrefix") String DBPrefix
     );
 
     @FormUrlEncoded
-    @POST("checkcall")
+    @POST("checkcall.php")
     Call<BtnEnDsResponce> btnenable(
             @Field("ecode") String ecode,
             @Field("DBPrefix") String DBPrefix
     );
 
     @FormUrlEncoded
-    @POST("allcallhistory")
+    @POST("allcallhistory.php")
     Call<HistoryList> historyList(
             @Field("ecode") String ecode,
             @Field("DBPrefix") String DBPrefix

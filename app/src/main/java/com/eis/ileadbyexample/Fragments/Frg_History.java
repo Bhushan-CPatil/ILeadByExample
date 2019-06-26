@@ -95,13 +95,9 @@ public class Frg_History extends Fragment {
                 TextView date,first,last;
                 public Holder(@NonNull View itemView) {
                     super(itemView);
-
-
                     date = itemView.findViewById(R.id.date);
                     first = itemView.findViewById(R.id.first);
                     last = itemView.findViewById(R.id.last);
-
-
                 }
             } }
         );
