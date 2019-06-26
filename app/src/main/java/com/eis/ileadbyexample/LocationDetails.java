@@ -51,7 +51,7 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
     TextView fctime,lctime,fcadd,lcad,ttltime,date;
     ProgressDialog progressDialog;
     String fclatlang,lclatlang;
-    ImageButton back;
+    TextView back;
     List<LatLng> polygon = new ArrayList<>();
 
     @Override
