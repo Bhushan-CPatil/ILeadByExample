@@ -126,7 +126,8 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Refresh map", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Please wait reloading map....", Toast.LENGTH_SHORT).show();
+                mapView.invalidate();
             }
         });
 

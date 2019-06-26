@@ -54,11 +54,16 @@
         <activity android:name=".LocationDetails" />
         <activity
             android:name=".Activities.HomeScreen"
-            android:label="@string/title_activity_home_screen" />
-        <activity android:name=".Activities.RegisterUser" />
-        <activity android:name=".Activities.OTPVerification" />
-        <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.SplashScreen">
+            android:label="@string/title_activity_home_screen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.RegisterUser"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.OTPVerification"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
