@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,7 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
     String fclatlang,lclatlang;
     TextView back;
     List<LatLng> polygon = new ArrayList<>();
+    CardView ttlcard,lscard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,11 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
         ttltime = findViewById(R.id.ttlwrk);
         date = findViewById(R.id.date);
         back = findViewById(R.id.back);
+        ttlcard = findViewById(R.id.ttlcard);
+        lscard = findViewById(R.id.lscard);
+
+        ttlcard.setVisibility(View.GONE);
+        lscard.setVisibility(View.GONE);
 
         fctime.setText(getIntent().getStringExtra("fctime"));
         fcadd.setText(getIntent().getStringExtra("fcadd"));
@@ -149,30 +156,38 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
                 LatLng cc = new LatLng(lat, lang);
                 polygon.add(cc);
 
-            /*mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cc,11));
-            Marker marker = mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
-            marker.showInfoWindow();*/
-
-                String[] location1 = lclatlang.split(",");
-
-                lat = Double.valueOf(location1[0]);
-                lang = Double.valueOf(location1[1]);
-
-                LatLng cc1 = new LatLng(lat, lang);
-                polygon.add(cc1);
-
                 mMap.addMarker(new MarkerOptions().position(cc).
                         icon(BitmapDescriptorFactory.fromBitmap(
                                 createCustomMarker(LocationDetails.this, R.drawable.ic_fc_pin, "You are here")))).setTitle("This is your first call location");
 
-                mMap.addMarker(new MarkerOptions().position(cc1).
-                        icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(LocationDetails.this, R.drawable.ic_lc_pin, "You are here")))).setTitle("This is your last call location");
+            /*mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cc,11));
+            Marker marker = mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
+            marker.showInfoWindow();*/
+                LatLng cc1 = null;
+                if(lclatlang != null && !lclatlang.equalsIgnoreCase("")){
+                    String[] location1 = lclatlang.split(",");
+
+                    lat = Double.valueOf(location1[0]);
+                    lang = Double.valueOf(location1[1]);
+
+                    cc1 = new LatLng(lat, lang);
+                    polygon.add(cc1);
+
+                    mMap.addMarker(new MarkerOptions().position(cc1).
+                            icon(BitmapDescriptorFactory.fromBitmap(
+                                    createCustomMarker(LocationDetails.this, R.drawable.ic_lc_pin, "You are here")))).setTitle("This is your last call location");
+
+                }
 
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
                 builder.include(cc); //Taking Point A (First LatLng)
-                builder.include(cc1); //Taking Point A (First LatLng)
+                if(lclatlang != null && !lclatlang.equalsIgnoreCase("")){
+                    assert cc1 != null;
+                    builder.include(cc1); //Taking Point A (First LatLng)
+                    ttlcard.setVisibility(View.VISIBLE);
+                    lscard.setVisibility(View.VISIBLE);
+                }
                 LatLngBounds bounds = builder.build();
                 CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
                 mMap.moveCamera(cu);

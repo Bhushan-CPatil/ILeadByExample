@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +51,10 @@ public class Frg_History extends Fragment {
         rv_hist = view.findViewById(R.id.rv_history);
         listview = view.findViewById(R.id.l2);
         ErrorView = view.findViewById(R.id.l1);
+        //int resId = R.anim.layout_animation_fall_down;
+        int resId = R.anim.layout_animation_from_bottom;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getActivity(), resId);
+        rv_hist.setLayoutAnimation(animation);
         rv_hist.setNestedScrollingEnabled(false);
         rv_hist.setLayoutManager(new LinearLayoutManager(getActivity()));
 

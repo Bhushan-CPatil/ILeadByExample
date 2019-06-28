@@ -138,7 +138,12 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Please wait reloading map....", Toast.LENGTH_SHORT).show();
-                mapView.invalidate();
+                //mapView.invalidate();
+
+                if(mGoogleMap != null) {
+                    mGoogleMap.clear();
+                    onMapReady(mGoogleMap);
+                }
             }
         });
 
@@ -161,7 +166,7 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
                 builder.setTitle("Alert ?");
-                builder.setMessage("Are you sure this is your current location and you want to mark as your first call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
+                builder.setMessage("Are you sure this is your current location and you want to mark as your first call ? \n \nIf displayed location is not accurate then click on Reload / Refresh button .");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -233,7 +238,7 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
                 builder.setTitle("Alert !");
-                builder.setMessage("Are you sure this is your current location and you want to mark as your last call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
+                builder.setMessage("Are you sure this is your current location and you want to mark as your last call ? \n \nIf displayed location is not accurate then click on Reload / Refresh button .");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
