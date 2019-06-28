@@ -1,11 +1,15 @@
 package com.eis.ileadbyexample;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -15,16 +19,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +49,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -49,6 +57,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.karumi.dexter.Dexter;
@@ -63,6 +73,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -155,10 +166,13 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                String ec = ecode == null ? "" : ecode.trim();
+                                String ltlg = latlang == null ? "" : latlang.trim();
+                                String l = loc == null ? "" : loc.trim();
+                                String pin = pincode == null ? "" : pincode.trim();
                                 progressDialoge.show();
                                 Call<DefaultResponse> call = RetrofitClient
-                                        .getInstance().getApi().FCALL(ecode.trim(),latlang.trim(),loc.trim(),pincode.trim(),dbprefix);
+                                        .getInstance().getApi().FCALL(ec,ltlg,l,pin,dbprefix);
                                 call.enqueue(new Callback<DefaultResponse>() {
                                     @Override
                                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
@@ -213,19 +227,25 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         lcall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(allgranted == true && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
-                builder.setTitle("ILeadByExample");
+                builder.setTitle("Alert !");
                 builder.setMessage("Are you sure this is your current location and you want to mark as your last call ? \n \nIf displayed location is not accurate then click on Home to refresh / reload");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
+                                String ec = ecode == null ? "" : ecode.trim();
+                                String ltlg = latlang == null ? "" : latlang.trim();
+                                String l = loc == null ? "" : loc.trim();
+                                String pin = pincode == null ? "" : pincode.trim();
                                 progressDialoge.show();
                                 Call<DefaultResponse> call = RetrofitClient
-                                        .getInstance().getApi().LCALL(ecode.trim(),latlang.trim(),loc.trim(),pincode.trim(),dbprefix);
+                                        .getInstance().getApi().LCALL(ec,ltlg,l,pin,dbprefix);
                                 call.enqueue(new Callback<DefaultResponse>() {
                                     @Override
                                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
@@ -421,6 +441,22 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = mGoogleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.uber_style));
+
+            if (!success) {
+                Log.e("MapsActivityRaw", "Style parsing failed.");
+                Toast.makeText(getActivity(),"Style parsing failed.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("MapsActivityRaw", "Can't find style.", e);
+            Toast.makeText(getActivity(),"Can't find style.", Toast.LENGTH_SHORT).show();
+        }
+
         mLocationRequest = new LocationRequest();
         //mLocationRequest.setInterval(30000); // two minute interval
         //mLocationRequest.setFastestInterval(30000);
@@ -464,14 +500,26 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
 
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
+
+                mGoogleMap.addMarker(new MarkerOptions().position(latLng).
+                        icon(BitmapDescriptorFactory.fromBitmap(
+                                createCustomMarker(getActivity(),R.drawable.ic_placeholder,"You are here")))).setTitle("This is your current location");
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(latLng); //Taking Point A (First LatLng)
+                LatLngBounds bounds = builder.build();
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                mGoogleMap.moveCamera(cu);
+                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
+
+                /*MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
                 markerOptions.title("Current Position");
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                 mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
                 //move map camera
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));*/
 
                 //loc = getAddress(location.getLatitude(), location.getLongitude());
             }
@@ -555,15 +603,25 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
-            add = obj.getAddressLine(0);
-            add = add + ", " + obj.getCountryName();
-            add = add + ", " + obj.getCountryCode();
-            add = add + ", " + obj.getAdminArea();
-            add = add + ", " + obj.getPostalCode();
-            add = add + ", " + obj.getSubAdminArea();
-            add = add + ", " + obj.getLocality();
+
+            String ad1,ad2,ad3,ad4,ad5,ad6,ad7;
+            ad1= obj.getAddressLine(0) != null ? obj.getAddressLine(0) : "";
+            ad2= obj.getCountryName() != null ? obj.getCountryName() : "";
+            ad3= obj.getCountryCode() != null ? obj.getCountryCode() : "";
+            ad4= obj.getAdminArea() != null ? obj.getAdminArea() : "";
+            ad5= obj.getPostalCode() != null ? obj.getPostalCode() : "";
+            ad6= obj.getSubAdminArea() != null ? obj.getSubAdminArea() : "";
+            ad7= obj.getLocality() != null ? obj.getLocality() : "";
+
+            add = ad1;
+            add = add + ", " + ad2;
+            add = add + ", " + ad3;
+            add = add + ", " + ad4;
+            add = add + ", " + ad5;
+            add = add + ", " + ad6;
+            add = add + ", " + ad7;
             //add = add + ", " + obj.getSubThoroughfare();
-            pincode = obj.getPostalCode();
+            pincode = ad5;
             //Log.v("IGA", "Address" + add);
             // Toast.makeText(this, "Address=>" + add,
             // Toast.LENGTH_SHORT).show();
@@ -576,5 +634,25 @@ public class Frg_Home extends Fragment implements OnMapReadyCallback {
         }
 
         return  add;
+    }
+
+    public static Bitmap createCustomMarker(Context context, @DrawableRes int resource, String _name) {
+
+        View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
+
+        ImageView markerImage = (ImageView) marker.findViewById(R.id.user_dp);
+        markerImage.setImageResource(resource);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        marker.setLayoutParams(new ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT));
+        marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(marker.getMeasuredWidth(), marker.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        marker.draw(canvas);
+
+        return bitmap;
     }
 }

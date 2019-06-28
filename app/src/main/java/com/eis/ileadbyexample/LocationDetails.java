@@ -1,18 +1,34 @@
 package com.eis.ileadbyexample;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eis.ileadbyexample.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -106,33 +122,88 @@ public class LocationDetails extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-            String[] location = fclatlang.split(",");
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            LocationDetails.this, R.raw.uber_style));
 
-            Double lat = Double.valueOf(location[0]);
-            Double lang = Double.valueOf(location[1]);
+            if (!success) {
+                Log.e("MapsActivityRaw", "Style parsing failed.");
+                Toast.makeText(LocationDetails.this,"Style parsing failed.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("MapsActivityRaw", "Can't find style.", e);
+            Toast.makeText(LocationDetails.this,"Can't find style.", Toast.LENGTH_SHORT).show();
+        }
 
-            LatLng cc = new LatLng(lat,lang);
-            polygon.add(cc);
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                String[] location = fclatlang.split(",");
 
-            mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
+                Double lat = Double.valueOf(location[0]);
+                Double lang = Double.valueOf(location[1]);
+
+                LatLng cc = new LatLng(lat, lang);
+                polygon.add(cc);
+
+            /*mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cc,11));
             Marker marker = mMap.addMarker(new MarkerOptions().position(cc).title("First Call"));
-            marker.showInfoWindow();
+            marker.showInfoWindow();*/
 
-            String[] location1 = lclatlang.split(",");
+                String[] location1 = lclatlang.split(",");
 
-            lat = Double.valueOf(location1[0]);
-            lang = Double.valueOf(location1[1]);
+                lat = Double.valueOf(location1[0]);
+                lang = Double.valueOf(location1[1]);
 
-            LatLng cc1 = new LatLng(lat,lang);
-            polygon.add(cc1);
+                LatLng cc1 = new LatLng(lat, lang);
+                polygon.add(cc1);
 
-            mMap.addMarker(new MarkerOptions().position(cc1).title("Last Call"));
+                mMap.addMarker(new MarkerOptions().position(cc).
+                        icon(BitmapDescriptorFactory.fromBitmap(
+                                createCustomMarker(LocationDetails.this, R.drawable.ic_fc_pin, "You are here")))).setTitle("This is your first call location");
+
+                mMap.addMarker(new MarkerOptions().position(cc1).
+                        icon(BitmapDescriptorFactory.fromBitmap(
+                                createCustomMarker(LocationDetails.this, R.drawable.ic_lc_pin, "You are here")))).setTitle("This is your last call location");
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(cc); //Taking Point A (First LatLng)
+                builder.include(cc1); //Taking Point A (First LatLng)
+                LatLngBounds bounds = builder.build();
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                mMap.moveCamera(cu);
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(11), 2000, null);
+
+            /*mMap.addMarker(new MarkerOptions().position(cc1).title("Last Call"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(cc1));
             Marker marker1 = mMap.addMarker(new MarkerOptions().position(cc1).title("Last Call"));
-            marker1.showInfoWindow();
-
+            marker1.showInfoWindow();*/
+            }});
         }
+
+    public static Bitmap createCustomMarker(Context context, @DrawableRes int resource, String _name) {
+
+        View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
+
+        ImageView markerImage = (ImageView) marker.findViewById(R.id.user_dp);
+        markerImage.setImageResource(resource);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        marker.setLayoutParams(new ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT));
+        marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(marker.getMeasuredWidth(), marker.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        marker.draw(canvas);
+
+        return bitmap;
+    }
 }
 
 
