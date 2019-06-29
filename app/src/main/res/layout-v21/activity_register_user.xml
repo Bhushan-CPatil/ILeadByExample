@@ -17,41 +17,41 @@
 
     <ImageView
         android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
         android:layout_weight="2"
         android:src="@drawable/logo" />
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_weight="6"
             android:gravity="center"
-            android:layout_weight="3"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Registration"
+                android:textColor="@color/colorText"
                 android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorText"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/lid"
                 android:layout_width="250dp"
                 android:layout_height="50dp"
-                android:hint="Login ID"
-                android:inputType="number"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/edroundedcor3"
+                android:digits="0123456789"
                 android:drawableLeft="@drawable/ic_person"
                 android:drawablePadding="30dp"
+                android:hint="Login ID"
+                android:inputType="number"
                 android:maxLength="5"
-                android:digits="0123456789"
                 android:paddingLeft="14dp"
-                android:paddingRight="12dp"
                 android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/edroundedcor3"/>
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp" />
 
             <!--<EditText
                 android:id="@+id/pass"
@@ -71,30 +71,30 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
-                app:hintEnabled="false"
                 android:layout_marginTop="10dp"
-                app:hintAnimationEnabled="false"
                 android:textColorHint="@color/colorPrimary"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/colorPrimary">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/pass"
                     android:layout_width="250dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:hint="Password"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/edroundedcor3"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*/-+"
                     android:drawableStart="@drawable/ic_key"
                     android:drawablePadding="30dp"
+                    android:hint="Password"
                     android:inputType="textPassword"
-                    android:id="@+id/pass"
                     android:maxLength="5"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*/-+"
                     android:paddingLeft="14dp"
-                    android:paddingEnd="12dp"
                     android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:layout_marginTop="10dp"/>
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -102,38 +102,37 @@
                 android:id="@+id/mobileno"
                 android:layout_width="250dp"
                 android:layout_height="50dp"
-                android:hint="Mobile Number"
-                android:inputType="number"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edroundedcor3"
                 android:drawableLeft="@drawable/ic_phone"
                 android:drawablePadding="30dp"
                 android:enabled="false"
+                android:hint="Mobile Number"
+                android:inputType="number"
                 android:paddingLeft="14dp"
-                android:paddingRight="12dp"
                 android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edroundedcor3"/>
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/edroundedcor3">
+                android:background="@drawable/edroundedcor3"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_storage"
-                    android:layout_marginLeft="13sp"/>
+                    android:layout_marginLeft="13sp"
+                    app:srcCompat="@drawable/ic_storage" />
 
                 <Spinner
+                    android:id="@+id/spnarea"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/spnarea"
-                    android:layout_marginLeft="12dp"
-                    />
+                    android:layout_marginLeft="12dp" />
             </LinearLayout>
 
 
@@ -141,8 +140,8 @@
                 android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
                 android:layout_gravity="end"
+                android:layout_marginTop="18dp"
                 android:onClick="DoRegister"
                 app:srcCompat="@drawable/ic_arrow_forward" />
 
@@ -150,7 +149,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5">
+            android:layout_weight="2">
 
     <Button
         android:id="@+id/login"
