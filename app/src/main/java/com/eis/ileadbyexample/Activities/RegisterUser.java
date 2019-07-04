@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,11 +49,12 @@ import retrofit2.Response;
 public class RegisterUser extends AppCompatActivity {
 
     private EditText id,mobno;
-    private TextInputEditText pass;
-    private FloatingActionButton fabbtn;
-    private Button loginpage;
+    private TextInputEditText pass,confpass;
+    //private FloatingActionButton fabbtn;
+    //private Button loginpage;
+    public TextView fabbtn, loginpage;
     RelativeLayout rl;
-    String mPhoneNumber,dbprefix;
+    String mPhoneNumber,dbprefix,IMEI;
     ViewDialog progress;
     Spinner spnArea;
     RequestQueue requestQueue;
@@ -70,18 +72,20 @@ public class RegisterUser extends AppCompatActivity {
         progress = new ViewDialog(this);
         id = findViewById(R.id.lid);
         pass = findViewById(R.id.pass);
+        confpass = findViewById(R.id.confpass);
         mobno = findViewById(R.id.mobileno);
         fabbtn = findViewById(R.id.register);
         loginpage = findViewById(R.id.login);
         spnArea=findViewById(R.id.spnarea);
         getArea();
         rl = findViewById(R.id.rl);
-        TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         mPhoneNumber = tMgr.getLine1Number();
-        mobno.setText(mPhoneNumber);//.substring(2,12)
+        mobno.setText(mPhoneNumber.substring(2,12));//.substring(2,12)
+        IMEI = tMgr.getDeviceId();
         //dbprefix = "palsons2";
     }
 
@@ -89,6 +93,7 @@ public class RegisterUser extends AppCompatActivity {
 
             String lid = id.getText().toString().trim();
             String password = pass.getText().toString().trim();
+            String confpassword = confpass.getText().toString().trim();
             final String mobileno = mobno.getText().toString().trim();
 
             if (lid.isEmpty()) {
@@ -115,8 +120,26 @@ public class RegisterUser extends AppCompatActivity {
                 return;
             }
 
+            if (confpassword.isEmpty()) {
+                confpass.setError("Confirm password is required");
+                confpass.requestFocus();
+                return;
+            }
+
+            if (confpassword.length() > 5) {
+                confpass.setError("Please enter valid confirm password");
+                confpass.requestFocus();
+                return;
+            }
+
+        if (!confpassword.equalsIgnoreCase(password)) {
+            confpass.setError("Password not matched !");
+            confpass.requestFocus();
+            return;
+        }
+
             if (mobileno.isEmpty()) {
-                mobno.setError("Not able to read mobile number. Check SIM 1 slot has SIM card or not");
+                mobno.setError("Please enter registered mobile number");
                 mobno.requestFocus();
                 return;
                 /*Snackbar snackbar = Snackbar.make(rl, "Not able to read mobile number. Check SIM 1 slot has SIM card", Snackbar.LENGTH_INDEFINITE);
@@ -124,9 +147,15 @@ public class RegisterUser extends AppCompatActivity {
                 return;*/
             }
 
+        if (mobileno.length() != 10) {
+            mobno.setError("Please enter valid mobile number");
+            mobno.requestFocus();
+            return;
+        }
+
             progress.show();
             Call<DefaultResponse> call = RetrofitClient
-                    .getInstance().getApi().registerUser(lid, password,mobileno,spnArea.getSelectedItem().toString().trim());
+                    .getInstance().getApi().registerUser(lid, confpassword,mobileno,IMEI,spnArea.getSelectedItem().toString().trim());
             call.enqueue(new Callback<DefaultResponse>() {
 
                 @Override

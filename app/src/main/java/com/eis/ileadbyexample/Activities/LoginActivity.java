@@ -120,7 +120,8 @@ public class LoginActivity extends AppCompatActivity {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            mPhoneNumber = tMgr.getLine1Number();
+            mPhoneNumber = tMgr.getDeviceId();
+
 
             String mobileno = mPhoneNumber.trim();
 
@@ -149,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (mobileno.isEmpty()) {
-                Snackbar snackbar = Snackbar.make(rl, "Not able to read mobile number. Check SIM 1 slot has SIM card", Snackbar.LENGTH_INDEFINITE);
+                Snackbar snackbar = Snackbar.make(rl, "Not able to read device ID.", Snackbar.LENGTH_INDEFINITE);
                 snackbar.show();
                 return;
             }
@@ -170,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Log.d("message",loginResponse.getMessage());
                         if (loginResponse.getMessage().equalsIgnoreCase("SUCCESS")) {
                             if (loginResponse.getUser().getUser_status().equalsIgnoreCase("verified")) {
-                                if (loginResponse.getUser().getLogged_in_status().equalsIgnoreCase("0")) {
+                                if (loginResponse.getMessage().equalsIgnoreCase("SUCCESS")) {
                                     SharedPrefManager.getInstance(LoginActivity.this).saveUser(loginResponse.getUser());
                                     SharedPreferences prefs = getSharedPreferences("my_shared_preff", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
@@ -181,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Snackbar snackbar = Snackbar.make(rl, "User is already logged in into other device", Snackbar.LENGTH_INDEFINITE);
+                                    Snackbar snackbar = Snackbar.make(rl, loginResponse.getMessage(), Snackbar.LENGTH_INDEFINITE);
                                     snackbar.show();
                                 }
                             } else if (loginResponse.getUser().getUser_status().equalsIgnoreCase("deleted")) {

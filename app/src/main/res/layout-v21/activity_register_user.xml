@@ -24,7 +24,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="6"
+            android:layout_weight="7"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -38,9 +38,9 @@
 
             <EditText
                 android:id="@+id/lid"
-                android:layout_width="250dp"
+                android:layout_width="280dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/edroundedcor3"
                 android:digits="0123456789"
                 android:drawableLeft="@drawable/ic_person"
@@ -69,6 +69,36 @@
                 android:background="@drawable/edroundedcor3"/>-->
 
             <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/colorPrimary"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorPrimary">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edroundedcor3"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*/-+"
+                android:drawableStart="@drawable/ic_key"
+                android:drawablePadding="30dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLength="5"
+                android:paddingLeft="14dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="12dp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -79,8 +109,8 @@
                 app:passwordToggleTint="@color/colorPrimary">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/pass"
-                    android:layout_width="250dp"
+                    android:id="@+id/confpass"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
@@ -88,7 +118,7 @@
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*/-+"
                     android:drawableStart="@drawable/ic_key"
                     android:drawablePadding="30dp"
-                    android:hint="Password"
+                    android:hint="Confirm Pass."
                     android:inputType="textPassword"
                     android:maxLength="5"
                     android:paddingLeft="14dp"
@@ -100,13 +130,12 @@
 
             <EditText
                 android:id="@+id/mobileno"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edroundedcor3"
                 android:drawableLeft="@drawable/ic_phone"
                 android:drawablePadding="30dp"
-                android:enabled="false"
                 android:hint="Mobile Number"
                 android:inputType="number"
                 android:paddingLeft="14dp"
@@ -136,17 +165,17 @@
             </LinearLayout>
 
 
-            <android.support.design.widget.FloatingActionButton
+            <!--<android.support.design.widget.FloatingActionButton
                 android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="18dp"
                 android:onClick="DoRegister"
-                app:srcCompat="@drawable/ic_arrow_forward" />
+                app:srcCompat="@drawable/ic_arrow_forward" />-->
 
         </LinearLayout>
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2">
@@ -165,6 +194,57 @@
         android:textColorHint="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold" />
-    </LinearLayout>
+    </LinearLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/login"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="0dp"
+                    android:text="BACK TO LOGIN"
+                    android:onClick="GotoLogin"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/register"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:text="REGISTER NOW"
+                    android:layout_weight="1"
+                    android:onClick="DoRegister"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:gravity="end|center_vertical"
+                    android:paddingEnd="10dp"
+                    android:textStyle="bold" />
+                <!--<LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/register"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="DoRegister"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/ic_arrow_forward" />
+                </LinearLayout>-->
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
     </RelativeLayout>

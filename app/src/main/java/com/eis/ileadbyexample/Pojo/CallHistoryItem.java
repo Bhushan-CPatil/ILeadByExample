@@ -9,7 +9,7 @@ public class CallHistoryItem{
 	@SerializedName("FC_latlang")
 	private String fCLatlang;
 
-	@SerializedName("rep_date")
+	@SerializedName("rep_date1")
 	private String repDate;
 
 	@SerializedName("WK_time_diff")
