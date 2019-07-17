@@ -114,8 +114,8 @@ public class RegisterUser extends AppCompatActivity {
                 return;
             }
 
-            if (password.length() > 5) {
-                pass.setError("Please enter valid password");
+            if (password.length() < 8) {
+                pass.setError("Password is to short !");
                 pass.requestFocus();
                 return;
             }
@@ -126,8 +126,8 @@ public class RegisterUser extends AppCompatActivity {
                 return;
             }
 
-            if (confpassword.length() > 5) {
-                confpass.setError("Please enter valid confirm password");
+            if (confpassword.length() < 8) {
+                confpass.setError("Password is to short !");
                 confpass.requestFocus();
                 return;
             }

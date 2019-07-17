@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.eis.ileadbyexample.Api.RetrofitClient;
 import com.eis.ileadbyexample.Fragments.Frg_History;
+import com.eis.ileadbyexample.Fragments.Profile_Frag;
 import com.eis.ileadbyexample.Frg_Home;
 import com.eis.ileadbyexample.Models.DefaultResponse;
 import com.eis.ileadbyexample.Others.ViewDialog;
@@ -69,6 +70,10 @@ public class HomeScreen extends AppCompatActivity {
                         fragment = new Frg_History();
                         loadFragment(fragment);
                         return true;
+                    case R.id.navigation_profile:
+                        fragment = new Profile_Frag();
+                        loadFragment(fragment);
+                        return true;
                     case R.id.navigation_notifications:
                         dologout();
                         return true;
@@ -88,8 +93,10 @@ public class HomeScreen extends AppCompatActivity {
                         fragment = new Frg_Home();
                         return true;
                     case R.id.navigation_dashboard:
-
                         fragment = new Frg_History();
+                        return true;
+                    case R.id.navigation_profile:
+                        fragment = new Profile_Frag();
                         return true;
                     case R.id.navigation_notifications:
                         dologout();

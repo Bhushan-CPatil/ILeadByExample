@@ -12,6 +12,11 @@
         android:title="@string/title_history" />
 
     <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_17_person"
+        android:title="@string/title_profile" />
+
+    <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_power"
         android:title="@string/title_logout" />

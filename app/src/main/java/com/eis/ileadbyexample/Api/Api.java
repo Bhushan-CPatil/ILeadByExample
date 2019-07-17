@@ -4,6 +4,7 @@ import com.eis.ileadbyexample.Models.BtnEnDsResponce;
 import com.eis.ileadbyexample.Models.DefaultResponse;
 import com.eis.ileadbyexample.Models.ErrorBooleanResponce;
 import com.eis.ileadbyexample.Models.LoginResponse;
+import com.eis.ileadbyexample.Pojo.FetchProfileRes;
 import com.eis.ileadbyexample.Pojo.HistoryList;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -91,6 +92,22 @@ public interface Api {
     @POST("allcallhistory.php")
     Call<HistoryList> historyList(
             @Field("ecode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("user_profile.php")
+    Call<FetchProfileRes> user_profile(
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("changepassword.php")
+    Call<com.eis.ileadbyexample.Pojo.DefaultResponse> changepassword(
+            @Field("ecode") String ecode,
+            @Field("oldpass") String oldpass,
+            @Field("newpass") String newpass,
             @Field("DBPrefix") String DBPrefix
     );
 }
